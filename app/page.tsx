@@ -1,149 +1,124 @@
 "use client"
 
-import type React from "react"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 
-export default function VSLLandingPage() {
-  const [viewers, setViewers] = useState(2840)
-  const [iframeSrc, setIframeSrc] = useState("")
-  const [userComment, setUserComment] = useState("")
-  const [chatMessages, setChatMessages] = useState([
-    { user: "Maria S.", message: "Não acredito que isso existe…", time: "agora mesmo" },
-    { user: "João P.", message: "Já liberei o acesso do meu alvo kkkkk", time: "há 1 min" },
-    { user: "Carlos R.", message: "Funciona mesmo gente!", time: "há 2 min" },
+export default function Home() {
+  const [viewers, setViewers] = useState(2831)
+  const [messages, setMessages] = useState([
+    { name: "Maria S.", text: "Não acredito que isso existe...", time: "Agora mesmo" },
+    { name: "João P.", text: "Já liberei o acesso do meu alvo kkkkk", time: "Há 1 min" },
+    { name: "Ana Costa", text: "Funciona mesmo! Estou em choque 😱", time: "Há 2 min" },
+    { name: "Carlos M.", text: "Melhor ferramenta que já usei", time: "Há 3 min" },
+    { name: "Beatriz L.", text: "Mano isso é real??? 😮", time: "Há 4 min" },
+    { name: "Rafael S.", text: "Consegui ver tudo, valeu demais!", time: "Há 5 min" },
   ])
+  const [userComment, setUserComment] = useState("")
+  const [iframeSrc, setIframeSrc] = useState("")
 
-  const messageBank = [
-    { user: "Ana L.", message: "Melhor ferramenta que já vi" },
-    { user: "Pedro M.", message: "Incrível, muito obrigado!" },
-    { user: "Julia K.", message: "Consegui ver tudo, valeu!" },
-    { user: "Ricardo F.", message: "Caramba, funciona mesmo!" },
-    { user: "Fernanda B.", message: "Isso é real gente?" },
-    { user: "Lucas T.", message: "Já consegui acessar aqui!" },
-    { user: "Camila R.", message: "Perfeito demais!" },
-    { user: "Bruno S.", message: "Não to acreditando kkkkk" },
-    { user: "Patricia N.", message: "Melhor coisa que descobri hoje" },
-    { user: "Rafael D.", message: "Vlw msm, funcionou!" },
-    { user: "Juliana M.", message: "Gente, é sério isso?" },
-    { user: "Thiago A.", message: "Top demais essa ferramenta" },
-    { user: "Amanda P.", message: "Consegui! Obrigada!" },
-    { user: "Gabriel L.", message: "Sensacional cara!" },
-    { user: "Larissa V.", message: "Quero mais disso kkk" },
-    { user: "Mateus O.", message: "Valeu pela dica!" },
-    { user: "Bianca S.", message: "Melhor live que já vi" },
-    { user: "Felipe G.", message: "Isso é muito bom!" },
-    { user: "Mariana C.", message: "Tô impressionada!" },
-    { user: "Diego H.", message: "Acabei de testar, funciona!" },
+  const allMessages = [
+    "Não acredito que isso existe...",
+    "Já liberei o acesso do meu alvo kkkkk",
+    "Funciona mesmo! Estou em choque 😱",
+    "Melhor ferramenta que já usei",
+    "Mano isso é real??? 😮",
+    "Consegui ver tudo, valeu demais!",
+    "Isso é incrível, funcionou de primeira!",
+    "Quem mais já conseguiu acesso?",
+    "Valeu pela dica, tá perfeito!",
+    "Não sabia que era tão fácil assim",
+    "Show demais essa ferramenta",
+    "Alguém mais testou? Funcionou aqui",
+    "Caraca, que massa isso!",
+    "Liberou aqui também 🔥",
+    "Finalmente consegui!",
+    "Isso vai ajudar muito",
+    "Top demais, recomendo!",
+    "Funcionou perfeitamente",
+    "Valeu pela transmissão!",
+    "Que ferramenta poderosa!",
+  ]
+
+  const names = [
+    "Maria S.",
+    "João P.",
+    "Ana Costa",
+    "Carlos M.",
+    "Beatriz L.",
+    "Rafael S.",
+    "Lucas T.",
+    "Fernanda A.",
+    "Pedro H.",
+    "Julia M.",
+    "Ricardo P.",
+    "Camila S.",
+    "Bruno L.",
+    "Mariana F.",
+    "Diego R.",
   ]
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const script = document.createElement("script")
+    script.src = "https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js"
+    script.async = true
+    document.head.appendChild(script)
+
+    const searchParams = window.location.search || "?"
+    const videoUrl = `https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/embed.html${searchParams}&vl=${encodeURIComponent(window.location.href)}`
+    setIframeSrc(videoUrl)
+
+    const viewersInterval = setInterval(() => {
       setViewers((prev) => {
-        const change = Math.floor(Math.random() * 20) - 10
-        const newValue = prev + change
-        return Math.max(2500, Math.min(5000, newValue))
+        const change = Math.floor(Math.random() * 11) - 5
+        return Math.max(2800, Math.min(2900, prev + change))
       })
     }, 15000)
-    return () => clearInterval(interval)
-  }, [])
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const script = document.createElement("script")
-      script.src = "https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js"
-      script.async = true
-      if (!document.querySelector('script[src*="smartplayer-wc/v4/sdk.js"]')) {
-        document.head.appendChild(script)
-      }
-
-      const src =
-        "https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/embed.html" +
-        (window.location.search || "?") +
-        "&vl=" +
-        encodeURIComponent(window.location.href)
-      setIframeSrc(src)
-    }
-  }, [])
-
-  useEffect(() => {
-    let messageIndex = 0
-    const vslDuration = 105000
-    const messageInterval = 8000
-
-    const interval = setInterval(() => {
-      if (messageIndex < messageBank.length) {
+    let messageIndex = 6
+    const messagesInterval = setInterval(() => {
+      if (messageIndex < 20) {
+        const randomName = names[Math.floor(Math.random() * names.length)]
         const newMessage = {
-          ...messageBank[messageIndex],
-          time: "agora mesmo",
+          name: randomName,
+          text: allMessages[messageIndex],
+          time: "Agora mesmo",
         }
-
-        setChatMessages((prev) => {
-          const updatedMessages = prev.map((msg, idx) => {
-            if (idx === 0) return { ...msg, time: "há 1 min" }
-            if (idx === 1) return { ...msg, time: "há 2 min" }
-            if (idx === 2) return { ...msg, time: "há 3 min" }
-            return msg
-          })
-
-          return [newMessage, ...updatedMessages].slice(0, 6)
-        })
-
+        setMessages((prev) => [newMessage, ...prev.slice(0, 5)])
         messageIndex++
       }
-    }, messageInterval)
-
-    const timeout = setTimeout(() => {
-      clearInterval(interval)
-    }, vslDuration)
+    }, 8000)
 
     return () => {
-      clearInterval(interval)
-      clearTimeout(timeout)
+      clearInterval(viewersInterval)
+      clearInterval(messagesInterval)
     }
   }, [])
 
-  const handleUserComment = (e: React.FormEvent) => {
-    e.preventDefault()
-
+  const handleSendComment = () => {
     if (userComment.trim()) {
       const newMessage = {
-        user: "usuário",
-        message: userComment,
-        time: "agora mesmo",
+        name: "usuário",
+        text: userComment,
+        time: "Agora mesmo",
       }
-
-      setChatMessages((prev) => {
-        const updatedMessages = prev.map((msg, idx) => {
-          if (idx === 0) return { ...msg, time: "há 1 min" }
-          if (idx === 1) return { ...msg, time: "há 2 min" }
-          if (idx === 2) return { ...msg, time: "há 3 min" }
-          return msg
-        })
-
-        return [newMessage, ...updatedMessages].slice(0, 6)
-      })
-
+      setMessages((prev) => [newMessage, ...prev.slice(0, 5)])
       setUserComment("")
     }
   }
 
   return (
-    <div className="min-h-screen bg-[#020409] text-white relative overflow-hidden">
+    <>
       <MatrixRain />
+      <div className="min-h-screen bg-black text-white relative z-10">
+        <div className="container mx-auto px-4 py-8 max-w-2xl">
+          <div className="flex justify-center mb-6">
+            <img src="/images/logo-deepgram.png" alt="DeepGram Logo" className="h-16 w-auto" />
+          </div>
 
-      <div className="relative z-10 max-w-[480px] mx-auto px-6 py-8">
-        <div className="flex justify-center mb-6">
-          <img src="/images/image.png" alt="DeepGram Logo" className="h-16 w-auto" />
-        </div>
-
-        <div className="text-center mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">
+          <h1 className="text-3xl md:text-4xl font-bold text-center mb-8">
             Assista o vídeo e libere o acesso completo.
           </h1>
-        </div>
 
-        <div className="mb-4">
-          <div className="mb-3">
+          <div className="mb-8">
             <div
               id="ifr_693b7511c33297495ef78de2_wrapper"
               style={{ margin: "0 auto", width: "100%", maxWidth: "400px" }}
@@ -163,141 +138,114 @@ export default function VSLLandingPage() {
             </div>
           </div>
 
-          <div className="text-center mb-3">
-            <span className="text-[#ffd700] font-semibold text-sm">{viewers.toLocaleString("pt-BR")}</span>
-            <span className="text-white font-normal text-sm ml-1">pessoas assistindo agora</span>
-          </div>
-        </div>
-
-        <div className="bg-black/40 border border-gray-800 rounded-lg p-4 mb-6">
-          <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-800">
-            <div className="w-2 h-2 bg-[#00ff41] rounded-full animate-pulse"></div>
-            <span className="text-xs text-gray-400 uppercase font-semibold">Chat da Live</span>
+          <div className="text-center mb-8 text-lg">
+            <span style={{ color: "#ffd700" }} className="font-bold">
+              {viewers.toLocaleString()}
+            </span>
+            <span className="text-white"> pessoas assistindo agora</span>
           </div>
 
-          <div className="space-y-3 max-h-48 overflow-y-auto mb-3">
-            {chatMessages.map((msg, i) => (
-              <div key={`${msg.user}-${i}`} className="text-sm">
-                <div className="flex items-baseline gap-2 mb-1">
-                  <span className="text-[#00ff88] font-semibold text-xs">{msg.user}</span>
-                  <span className="text-gray-600 text-xs">– {msg.time}</span>
+          <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800 shadow-lg">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <h2 className="text-lg font-semibold text-green-400">CHAT DA TRANSMISSÃO</h2>
+            </div>
+
+            <div className="space-y-3 mb-4 max-h-80 overflow-y-auto">
+              {messages.map((msg, idx) => (
+                <div key={idx} className="animate-fadeIn">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-green-400 font-semibold text-sm">{msg.name}</span>
+                    <span className="text-zinc-500 text-xs">• {msg.time}</span>
+                  </div>
+                  <p className="text-zinc-300 text-sm mt-1">{msg.text}</p>
                 </div>
-                <p className="text-gray-300 text-xs">{msg.message}</p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          <form onSubmit={handleUserComment} className="flex gap-2 pt-3 border-t border-gray-800">
-            <input
-              type="text"
-              value={userComment}
-              onChange={(e) => setUserComment(e.target.value)}
-              placeholder="Digite seu comentário..."
-              className="flex-1 bg-black/60 border border-gray-700 rounded px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#00ff88] transition-colors"
-            />
-            <button
-              type="submit"
-              className="bg-white hover:bg-gray-200 text-black font-semibold px-4 py-2 rounded text-sm transition-colors"
-            >
-              Enviar
-            </button>
-          </form>
+            <div className="flex gap-2 pt-4 border-t border-zinc-800">
+              <input
+                type="text"
+                value={userComment}
+                onChange={(e) => setUserComment(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleSendComment()}
+                placeholder="Digite seu comentário..."
+                className="flex-1 bg-zinc-800 text-white px-4 py-2 rounded-lg border border-zinc-700 focus:outline-none focus:border-green-500"
+              />
+              <button
+                onClick={handleSendComment}
+                className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+              >
+                Enviar
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-
-      <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        
-        body {
-          font-family: 'Inter', sans-serif;
-        }
-
-        ::-webkit-scrollbar {
-          width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-          background: rgba(0, 0, 0, 0.3);
-        }
-
-        ::-webkit-scrollbar-thumb {
-          background: rgba(0, 255, 136, 0.3);
-          border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-          background: rgba(0, 255, 136, 0.5);
-        }
-      `}</style>
-    </div>
+    </>
   )
 }
 
 function MatrixRain() {
-  const [drops, setDrops] = useState<
-    Array<{ id: number; left: string; delay: string; duration: string; color: string; chars: string }>
-  >([])
-
   useEffect(() => {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*"
-    const colors = ["#ff1744", "#ff4081", "#f50057", "#e91e63", "#c2185b", "#ff6090"]
+    const canvas = document.getElementById("matrix-canvas") as HTMLCanvasElement
+    if (!canvas) return
 
-    const columnCount = typeof window !== "undefined" ? Math.floor(window.innerWidth / 18) : 80
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
 
-    const newDrops = Array.from({ length: columnCount }, (_, i) => {
-      const columnChars = Array.from({ length: 35 }, () => chars[Math.floor(Math.random() * chars.length)]).join("\n")
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
 
-      return {
-        id: i,
-        left: `${i * 18}px`,
-        delay: `${Math.random() * 5}s`,
-        duration: `${10 + Math.random() * 15}s`,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        chars: columnChars,
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?"
+    const fontSize = 14
+    const columns = canvas.width / fontSize
+
+    const drops: number[] = []
+    for (let i = 0; i < columns; i++) {
+      drops[i] = Math.random() * -100
+    }
+
+    const colors = ["#ff0066", "#ff0088", "#ff00aa", "#cc0066", "#dd0077"]
+
+    function draw() {
+      if (!ctx || !canvas) return
+
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)"
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+      ctx.font = `${fontSize}px monospace`
+
+      for (let i = 0; i < drops.length; i++) {
+        const char = chars[Math.floor(Math.random() * chars.length)]
+        const color = colors[Math.floor(Math.random() * colors.length)]
+
+        ctx.fillStyle = color
+        ctx.globalAlpha = 0.35
+        ctx.fillText(char, i * fontSize, drops[i] * fontSize)
+        ctx.globalAlpha = 1
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0
+        }
+        drops[i]++
       }
-    })
+    }
 
-    setDrops(newDrops)
+    const interval = setInterval(draw, 50)
+
+    const handleResize = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
+
+    window.addEventListener("resize", handleResize)
+
+    return () => {
+      clearInterval(interval)
+      window.removeEventListener("resize", handleResize)
+    }
   }, [])
 
-  return (
-    <>
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        {drops.map((drop) => (
-          <div
-            key={drop.id}
-            className="absolute top-0 text-xs font-mono leading-tight opacity-35"
-            style={{
-              left: drop.left,
-              animation: `matrix-fall ${drop.duration} linear infinite`,
-              animationDelay: drop.delay,
-              color: drop.color,
-              whiteSpace: "pre",
-            }}
-          >
-            {drop.chars}
-          </div>
-        ))}
-      </div>
-
-      <style jsx global>{`
-        @keyframes matrix-fall {
-          0% {
-            transform: translateY(-100%);
-            opacity: 0;
-          }
-          5% {
-            opacity: 0.35;
-          }
-          95% {
-            opacity: 0.35;
-          }
-          100% {
-            transform: translateY(calc(100vh + 100%));
-            opacity: 0;
-          }
-        }
-      `}</style>
-    </>
-  )
+  return <canvas id="matrix-canvas" className="fixed inset-0 z-0 pointer-events-none" style={{ background: "#000" }} />
 }
