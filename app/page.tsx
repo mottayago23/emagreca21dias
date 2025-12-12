@@ -62,21 +62,24 @@ export default function VSLPage() {
   ]
 
   useEffect(() => {
-    const script = document.createElement("script")
-    script.src = "https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js"
-    script.async = true
-    document.head.appendChild(script)
+    const existingScript = document.querySelector('script[src*="smartplayer-wc"]')
+    if (!existingScript) {
+      const script = document.createElement("script")
+      script.src = "https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js"
+      script.async = true
+      document.head.appendChild(script)
+    }
 
     const currentUrl = typeof window !== "undefined" ? window.location.href : ""
     const src = `https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/embed.html${window.location.search || "?"}&vl=${encodeURIComponent(currentUrl)}`
     setIframeSrc(src)
 
-    const handleMessage = (event: MessageEvent) => {
-      console.log("[v0] Mensagem recebida:", event.data)
+    let hasTriggered = false
 
-      if (event.data && typeof event.data === "object") {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data && typeof event.data === "object" && !hasTriggered) {
         if (event.data.type === "videoEnded") {
-          console.log("[v0] Vídeo terminou! Mostrando oferta...")
+          hasTriggered = true
           setShowOffer(true)
           setShowConfetti(true)
           setTimeout(() => setShowConfetti(false), 4000)
@@ -88,11 +91,8 @@ export default function VSLPage() {
 
     return () => {
       window.removeEventListener("message", handleMessage)
-      if (document.head.contains(script)) {
-        document.head.removeChild(script)
-      }
     }
-  }, [])
+  }, []) // Array de dependências vazio para executar apenas uma vez
 
   useEffect(() => {
     const viewerInterval = setInterval(() => {
