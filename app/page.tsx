@@ -75,25 +75,25 @@ export default function VSLPage() {
   }, [])
 
   useEffect(() => {
-    const script = document.createElement("script")
-    script.src =
-      "https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/player.js"
-    script.async = true
-    document.head.appendChild(script)
-
-    return () => {
-      if (document.head.contains(script)) {
-        document.head.removeChild(script)
-      }
-    }
-  }, [])
-
-  useEffect(() => {
     const timer = setTimeout(() => {
       setShowOffer(true)
     }, 105000)
 
     return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    const scriptExists = document.querySelector(
+      'script[src="https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/player.js"]',
+    )
+
+    if (!scriptExists) {
+      const script = document.createElement("script")
+      script.src =
+        "https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/player.js"
+      script.async = true
+      document.head.appendChild(script)
+    }
   }, [])
 
   const handleSubmit = (e: React.FormEvent) => {

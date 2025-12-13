@@ -22,6 +22,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        <Script
+          src="https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/player.js"
+          strategy="beforeInteractive"
+        />
         <Script src="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js" strategy="beforeInteractive" />
         <Script src="https://cdn.utmify.com.br/scripts/utms/latest.js" strategy="lazyOnload" />
         <Script
