@@ -77,10 +77,38 @@ export default function VSLPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowOffer(true)
+      createConfetti()
     }, 105000)
 
     return () => clearTimeout(timer)
   }, [])
+
+  const createConfetti = () => {
+    const colors = ["#ffd700", "#ff0066", "#00ff00", "#0066ff", "#ff3366", "#ffff00"]
+    const confettiCount = 100
+
+    for (let i = 0; i < confettiCount; i++) {
+      setTimeout(() => {
+        const confetti = document.createElement("div")
+        confetti.style.position = "fixed"
+        confetti.style.width = "10px"
+        confetti.style.height = "10px"
+        confetti.style.left = Math.random() * 100 + "%"
+        confetti.style.top = "-20px"
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]
+        confetti.style.zIndex = "100"
+        confetti.style.pointerEvents = "none"
+        confetti.style.animation = `confetti-fall ${2 + Math.random() * 3}s linear`
+        confetti.style.animationDelay = Math.random() * 0.5 + "s"
+
+        document.body.appendChild(confetti)
+
+        setTimeout(() => {
+          confetti.remove()
+        }, 5000)
+      }, i * 30)
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -195,7 +223,7 @@ export default function VSLPage() {
             </div>
 
             <a
-              href="https://pay.kirvano.com/d1068743-15df-4ede-bbcc-aa9db15cbb01"
+              href="https://ambienteseguro.org.ua/c/6b541922b2"
               className="block w-full bg-gradient-to-r from-green-500 to-green-600 text-white text-xl font-bold py-4 rounded-lg hover:from-green-600 hover:to-green-700 transition-all text-center transform hover:scale-105"
             >
               PAGAR TAXA DE ACESSO
