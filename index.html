@@ -70,7 +70,7 @@
       background: #6b7280;
     }
     
-    /* Adicionando animação de confetes */
+    /* Melhorando a animação de confetes */
     @keyframes confetti-fall {
       0% {
         transform: translateY(-100vh) rotate(0deg);
@@ -88,6 +88,7 @@
       height: 10px;
       z-index: 100;
       pointer-events: none;
+      animation: confetti-fall 3s linear forwards;
     }
   </style>
 </head>
@@ -202,37 +203,37 @@
         </div>
       </div>
 
-      <!-- Chat -->
+      <!-- Corrigindo o espaçamento do chat -->
       <div class="bg-black border-2 border-white rounded-lg p-4" style="background: rgba(0, 0, 0, 0.8);">
-        <div class="flex items-center gap-2 mb-3">
+        <div class="flex items-center gap-2 mb-4">
           <div class="w-2 h-2 bg-green-500 rounded-full pulse"></div>
           <h3 class="text-green-400 font-semibold text-sm uppercase tracking-wider">Chat da Transmissão</h3>
         </div>
 
-        <div class="space-y-3 mb-4 max-h-64 overflow-y-auto chat-scroll">
+        <div class="space-y-4 mb-4 max-h-64 overflow-y-auto chat-scroll pr-2">
           <div class="animate-fade-in">
-            <p class="text-gray-400 text-sm font-semibold">Julia S. <span class="text-gray-500 text-xs ml-1">• Agora mesmo</span></p>
-            <p class="text-white text-sm">Consegui ver a localização em tempo real!</p>
+            <p class="text-gray-400 text-sm font-semibold mb-1">Julia S. <span class="text-gray-500 text-xs ml-1">• Agora mesmo</span></p>
+            <p class="text-white text-sm leading-relaxed">Consegui ver a localização em tempo real!</p>
           </div>
           <div class="animate-fade-in">
-            <p class="text-gray-400 text-sm font-semibold">Rodrigo T. <span class="text-gray-500 text-xs ml-1">• Agora mesmo</span></p>
-            <p class="text-white text-sm">Inacreditável como o DeepGram funciona bem</p>
+            <p class="text-gray-400 text-sm font-semibold mb-1">Rodrigo T. <span class="text-gray-500 text-xs ml-1">• Agora mesmo</span></p>
+            <p class="text-white text-sm leading-relaxed">Inacreditável como o DeepGram funciona bem</p>
           </div>
           <div class="animate-fade-in">
-            <p class="text-gray-400 text-sm font-semibold">Pedro H. <span class="text-gray-500 text-xs ml-1">• Há 1 min</span></p>
-            <p class="text-white text-sm">Liberei o acesso em menos de 1 minuto com DeepGram</p>
+            <p class="text-gray-400 text-sm font-semibold mb-1">Pedro H. <span class="text-gray-500 text-xs ml-1">• Há 1 min</span></p>
+            <p class="text-white text-sm leading-relaxed">Liberei o acesso em menos de 1 minuto com DeepGram</p>
           </div>
           <div class="animate-fade-in">
-            <p class="text-gray-400 text-sm font-semibold">Ana Costa <span class="text-gray-500 text-xs ml-1">• Há 2 min</span></p>
-            <p class="text-white text-sm">Funciona mesmo! Estou em choque 😱</p>
+            <p class="text-gray-400 text-sm font-semibold mb-1">Ana Costa <span class="text-gray-500 text-xs ml-1">• Há 2 min</span></p>
+            <p class="text-white text-sm leading-relaxed">Funciona mesmo! Estou em choque 😱</p>
           </div>
           <div class="animate-fade-in">
-            <p class="text-gray-400 text-sm font-semibold">Carlos M. <span class="text-gray-500 text-xs ml-1">• Há 3 min</span></p>
-            <p class="text-white text-sm">Melhor ferramenta que já usei</p>
+            <p class="text-gray-400 text-sm font-semibold mb-1">Carlos M. <span class="text-gray-500 text-xs ml-1">• Há 3 min</span></p>
+            <p class="text-white text-sm leading-relaxed">Melhor ferramenta que já usei</p>
           </div>
           <div class="animate-fade-in">
-            <p class="text-gray-400 text-sm font-semibold">Fernanda R. <span class="text-gray-500 text-xs ml-1">• Agora mesmo</span></p>
-            <p class="text-white text-sm">Consegui monitorar tudo que eu queria</p>
+            <p class="text-gray-400 text-sm font-semibold mb-1">Fernanda R. <span class="text-gray-500 text-xs ml-1">• Agora mesmo</span></p>
+            <p class="text-white text-sm leading-relaxed">Consegui monitorar tudo que eu queria</p>
           </div>
         </div>
 
@@ -244,7 +245,7 @@
           />
           <button
             type="submit"
-            class="bg-white text-black px-6 py-2 rounded font-semibold hover:bg-gray-200 transition-colors"
+            class="bg-white text-black px-6 py-2 rounded font-semibold hover:bg-gray-200 transition-colors text-sm"
           >
             Enviar
           </button>
@@ -292,31 +293,34 @@
       canvas.height = window.innerHeight;
     });
 
-    // Mostrar oferta após 1min45s
     setTimeout(() => {
-      document.getElementById('offerCard').style.display = 'block';
+      const offerCard = document.getElementById('offerCard');
+      offerCard.style.display = 'block';
       createConfetti();
-    }, 105000);
+    }, 105000); // 1 minuto e 45 segundos
     
     function createConfetti() {
-      const colors = ['#ffd700', '#ff0066', '#00ff00', '#0066ff', '#ff3366', '#ffff00'];
-      const confettiCount = 100;
+      const colors = ['#ffd700', '#ff0066', '#00ff00', '#0066ff', '#ff3366', '#ffff00', '#ff00ff'];
+      const confettiCount = 150;
       
       for (let i = 0; i < confettiCount; i++) {
         setTimeout(() => {
           const confetti = document.createElement('div');
           confetti.className = 'confetti';
           confetti.style.left = Math.random() * 100 + '%';
+          confetti.style.top = '-10px';
           confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-          confetti.style.animation = `confetti-fall ${2 + Math.random() * 3}s linear`;
-          confetti.style.animationDelay = Math.random() * 0.5 + 's';
+          confetti.style.width = (Math.random() * 10 + 5) + 'px';
+          confetti.style.height = (Math.random() * 10 + 5) + 'px';
+          confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+          confetti.style.animationDelay = (Math.random() * 0.3) + 's';
           
           document.body.appendChild(confetti);
           
           setTimeout(() => {
             confetti.remove();
           }, 5000);
-        }, i * 30);
+        }, i * 20);
       }
     }
   </script>
