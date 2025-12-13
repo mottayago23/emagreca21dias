@@ -23,21 +23,27 @@ export default function RootLayout({
     <html lang="pt-BR">
       <head>
         <Script
-          src="https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/player.js"
+          src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+          data-utmify-prevent-xcod-sck
+          data-utmify-prevent-subids
+          async
+          defer
           strategy="beforeInteractive"
         />
-        <Script src="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js" strategy="beforeInteractive" />
-        <Script src="https://cdn.utmify.com.br/scripts/utms/latest.js" strategy="lazyOnload" />
         <Script
-          id="utmify-pixel"
-          strategy="lazyOnload"
+          id="utmify-pixel-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.pixelId = "693647b69da3d8dfc66eb3aa";
+              var a = document.createElement("script");
+              a.setAttribute("async", "");
+              a.setAttribute("defer", "");
+              a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+              document.head.appendChild(a);
             `,
           }}
         />
-        <Script src="https://cdn.utmify.com.br/scripts/pixel/pixel.js" strategy="lazyOnload" />
       </head>
       <body className={`font-sans antialiased`}>
         {children}

@@ -3,6 +3,17 @@
 import type React from "react"
 import { useState, useEffect, useRef } from "react"
 
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      "vturb-smartplayer": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+        id?: string
+        style?: React.CSSProperties
+      }
+    }
+  }
+}
+
 export default function VSLPage() {
   const [viewers, setViewers] = useState(2840)
   const [messages, setMessages] = useState([
@@ -16,6 +27,7 @@ export default function VSLPage() {
   const [newComment, setNewComment] = useState("")
   const [showOffer, setShowOffer] = useState(false)
   const chatRef = useRef<HTMLDivElement>(null)
+  const scriptLoadedRef = useRef(false)
 
   const allMessages = [
     "Consegui ver a localização em tempo real!",
@@ -133,20 +145,14 @@ export default function VSLPage() {
           <h1 className="text-3xl md:text-4xl font-bold mb-4">Assista o vídeo e libere o acesso completo.</h1>
         </div>
 
-        <div className="mb-4">
-          <div id="ifr_693b7511c33297495ef78de2_wrapper" style={{ margin: "0 auto", width: "100%", maxWidth: "400px" }}>
-            <div style={{ position: "relative", padding: "100% 0 0 0" }} id="ifr_693b7511c33297495ef78de2_aspect">
-              <iframe
-                frameBorder="0"
-                allowFullScreen
-                src="https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/embed.html"
-                id="ifr_693b7511c33297495ef78de2"
-                style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
-                referrerPolicy="origin"
-              />
-            </div>
-          </div>
+        <div className="mb-4 flex justify-center">
+          <vturb-smartplayer
+            id="vid-693b7511c33297495ef78de2"
+            style={{ display: "block", margin: "0 auto", width: "100%", maxWidth: "400px" }}
+          ></vturb-smartplayer>
         </div>
+
+        <VSLScript scriptLoadedRef={scriptLoadedRef} />
 
         <div className="text-center mb-4">
           <p className="text-lg">
@@ -267,6 +273,27 @@ export default function VSLPage() {
       </div>
     </div>
   )
+}
+
+function VSLScript({ scriptLoadedRef }: { scriptLoadedRef: React.MutableRefObject<boolean> }) {
+  useEffect(() => {
+    if (scriptLoadedRef.current) return
+
+    const script = document.createElement("script")
+    script.src =
+      "https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/player.js"
+    script.async = true
+    script.id = "vturb-player-script"
+
+    scriptLoadedRef.current = true
+    document.head.appendChild(script)
+
+    return () => {
+      // Não remover o script no unmount para evitar bugs no player
+    }
+  }, [scriptLoadedRef])
+
+  return null
 }
 
 function MatrixRain() {

@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DeepGram - VSL Landing Page</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Pixel Utmify -->
+  <script src="https://cdn.utmify.com.br/scripts/utms/latest.js" data-utmify-prevent-xcod-sck data-utmify-prevent-subids async defer></script>
+  <script>
+    window.pixelId = "693647b69da3d8dfc66eb3aa";
+    var a = document.createElement("script");
+    a.setAttribute("async", "");
+    a.setAttribute("defer", "");
+    a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+    document.head.appendChild(a);
+  </script>
+  
   <style>
     body {
       margin: 0;
@@ -105,20 +117,9 @@
         <h1 class="text-3xl md:text-4xl font-bold mb-4">Assista o vídeo e libere o acesso completo.</h1>
       </div>
 
-      <!-- VSL -->
-      <div class="mb-4">
-        <div id="ifr_693b7511c33297495ef78de2_wrapper" style="margin: 0 auto; width: 100%; max-width: 400px;">
-          <div style="position: relative; padding: 100% 0 0 0;" id="ifr_693b7511c33297495ef78de2_aspect">
-            <iframe
-              frameborder="0"
-              allowfullscreen
-              src="https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/embed.html"
-              id="ifr_693b7511c33297495ef78de2"
-              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-              referrerpolicy="origin"
-            ></iframe>
-          </div>
-        </div>
+      <!-- Adicionando VSL vturb-smartplayer corretamente -->
+      <div class="mb-4 flex justify-center">
+        <vturb-smartplayer id="vid-693b7511c33297495ef78de2" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
       </div>
 
       <!-- Contador -->
@@ -210,30 +211,22 @@
           <h3 class="text-green-400 font-semibold text-sm uppercase tracking-wider">Chat da Transmissão</h3>
         </div>
 
-        <div class="space-y-4 mb-4 max-h-64 overflow-y-auto chat-scroll pr-2">
+        <div id="chatMessages" class="space-y-4 mb-4 max-h-64 overflow-y-auto chat-scroll pr-2">
           <div class="animate-fade-in">
-            <p class="text-gray-400 text-sm font-semibold mb-1">Julia S. <span class="text-gray-500 text-xs ml-1">• Agora mesmo</span></p>
-            <p class="text-white text-sm leading-relaxed">Consegui ver a localização em tempo real!</p>
+            <p class="text-gray-400 text-sm font-semibold mb-1">Mariana L. <span class="text-gray-500 text-xs ml-1">• Há 5 min</span></p>
+            <p class="text-white text-sm leading-relaxed">Estou sem palavras com essa ferramenta!</p>
           </div>
           <div class="animate-fade-in">
-            <p class="text-gray-400 text-sm font-semibold mb-1">Rodrigo T. <span class="text-gray-500 text-xs ml-1">• Agora mesmo</span></p>
-            <p class="text-white text-sm leading-relaxed">Inacreditável como o DeepGram funciona bem</p>
+            <p class="text-gray-400 text-sm font-semibold mb-1">Carlos M. <span class="text-gray-500 text-xs ml-1">• Há 4 min</span></p>
+            <p class="text-white text-sm leading-relaxed">Melhor ferramenta que já usei</p>
           </div>
           <div class="animate-fade-in">
-            <p class="text-gray-400 text-sm font-semibold mb-1">Pedro H. <span class="text-gray-500 text-xs ml-1">• Há 1 min</span></p>
-            <p class="text-white text-sm leading-relaxed">Liberei o acesso em menos de 1 minuto com DeepGram</p>
+            <p class="text-gray-400 text-sm font-semibold mb-1">Beatriz S. <span class="text-gray-500 text-xs ml-1">• Há 3 min</span></p>
+            <p class="text-white text-sm leading-relaxed">Vi os stories ocultos dele, não acredito 😱</p>
           </div>
           <div class="animate-fade-in">
             <p class="text-gray-400 text-sm font-semibold mb-1">Ana Costa <span class="text-gray-500 text-xs ml-1">• Há 2 min</span></p>
             <p class="text-white text-sm leading-relaxed">Funciona mesmo! Estou em choque 😱</p>
-          </div>
-          <div class="animate-fade-in">
-            <p class="text-gray-400 text-sm font-semibold mb-1">Carlos M. <span class="text-gray-500 text-xs ml-1">• Há 3 min</span></p>
-            <p class="text-white text-sm leading-relaxed">Melhor ferramenta que já usei</p>
-          </div>
-          <div class="animate-fade-in">
-            <p class="text-gray-400 text-sm font-semibold mb-1">Fernanda R. <span class="text-gray-500 text-xs ml-1">• Agora mesmo</span></p>
-            <p class="text-white text-sm leading-relaxed">Consegui monitorar tudo que eu queria</p>
           </div>
         </div>
 
@@ -293,11 +286,66 @@
       canvas.height = window.innerHeight;
     });
 
+    const chatMessages = [
+      { name: "Pedro H.", message: "Liberei o acesso em menos de 1 minuto com DeepGram" },
+      { name: "Rodrigo T.", message: "Inacreditável como o DeepGram funciona bem" },
+      { name: "Julia S.", message: "Vi os stories ocultos dele, não acredito 😱" },
+      { name: "Fernanda R.", message: "Consegui monitorar tudo que eu queria" },
+      { name: "Lucas M.", message: "DeepGram mudou minha vida 🔥" },
+      { name: "Camila P.", message: "Descobri coisas que nem imaginava" },
+      { name: "Gabriel F.", message: "Melhor investimento que já fiz" },
+      { name: "Amanda L.", message: "DeepGram mudou minha vida 🔥" },
+      { name: "Rafael S.", message: "Consegui ver todos os directs em tempo real" },
+      { name: "Patricia N.", message: "Valeu cada centavo!" },
+      { name: "Diego R.", message: "Incrível, estou vendo tudo agora" },
+      { name: "Larissa T.", message: "Não sabia que era tão fácil" },
+      { name: "Bruno K.", message: "Stories ocultos ou postados apenas para melhores amigos" },
+      { name: "Isabela M.", message: "Consegui acessar o perfil completo!" },
+      { name: "Thiago L.", message: "A localização em tempo real é perfeita" },
+      { name: "Vanessa O.", message: "Relatório detalhado do perfil com análise de IA" },
+      { name: "Marcelo V.", message: "Vi localizações antigas e frequentes" },
+      { name: "Renata C.", message: "Acesso a mídia recebida e enviada por direct" },
+      { name: "Felipe A.", message: "Directs antigos até 18 meses atrás!" },
+      { name: "Carla B.", message: "Notificações em tempo real de tudo 🔔" }
+    ];
+
+    let messageIndex = 0;
+
+    function addNewMessage() {
+      const chatContainer = document.getElementById('chatMessages');
+      const message = chatMessages[messageIndex % chatMessages.length];
+      
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'animate-fade-in';
+      messageDiv.innerHTML = `
+        <p class="text-gray-400 text-sm font-semibold mb-1">${message.name} <span class="text-gray-500 text-xs ml-1">• Agora mesmo</span></p>
+        <p class="text-white text-sm leading-relaxed">${message.message}</p>
+      `;
+      
+      chatContainer.appendChild(messageDiv);
+      
+      // Remove mensagens antigas se houver mais de 8
+      const messages = chatContainer.querySelectorAll('div');
+      if (messages.length > 8) {
+        messages[0].remove();
+      }
+      
+      // Scroll automático para a última mensagem
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      
+      messageIndex++;
+    }
+
+    // Adiciona uma nova mensagem a cada 8-15 segundos
+    setInterval(() => {
+      addNewMessage();
+    }, Math.random() * 7000 + 8000);
+
     setTimeout(() => {
       const offerCard = document.getElementById('offerCard');
       offerCard.style.display = 'block';
       createConfetti();
-    }, 105000); // 1 minuto e 45 segundos
+    }, 105000);
     
     function createConfetti() {
       const colors = ['#ffd700', '#ff0066', '#00ff00', '#0066ff', '#ff3366', '#ffff00', '#ff00ff'];
@@ -323,6 +371,14 @@
         }, i * 20);
       }
     }
+  </script>
+
+  <!-- Script do player VSL no final do body -->
+  <script type="text/javascript">
+    var s=document.createElement("script");
+    s.src="https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/player.js";
+    s.async=true;
+    document.head.appendChild(s);
   </script>
 </body>
 </html>
