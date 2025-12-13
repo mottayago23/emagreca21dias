@@ -82,20 +82,6 @@ export default function VSLPage() {
     return () => clearTimeout(timer)
   }, [])
 
-  useEffect(() => {
-    const scriptExists = document.querySelector(
-      'script[src="https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/player.js"]',
-    )
-
-    if (!scriptExists) {
-      const script = document.createElement("script")
-      script.src =
-        "https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/player.js"
-      script.async = true
-      document.head.appendChild(script)
-    }
-  }, [])
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (newComment.trim()) {
@@ -115,15 +101,23 @@ export default function VSLPage() {
 
       <div className="relative z-10 container mx-auto px-4 py-8 max-w-2xl">
         <div className="text-center mb-6">
-          <img src="/images/image.png" alt="DeepGram Logo" className="mx-auto mb-6 h-16 w-auto" />
+          <img src="/images/image.png" alt="DeepGram Logo" className="mx-auto mb-4 w-32" />
           <h1 className="text-3xl md:text-4xl font-bold mb-4">Assista o vídeo e libere o acesso completo.</h1>
         </div>
 
         <div className="mb-4">
-          <vturb-smartplayer
-            id="vid-693b7511c33297495ef78de2"
-            style={{ display: "block", margin: "0 auto", width: "100%", maxWidth: "400px" }}
-          />
+          <div id="ifr_693b7511c33297495ef78de2_wrapper" style={{ margin: "0 auto", width: "100%", maxWidth: "400px" }}>
+            <div style={{ position: "relative", padding: "100% 0 0 0" }} id="ifr_693b7511c33297495ef78de2_aspect">
+              <iframe
+                frameBorder="0"
+                allowFullScreen
+                src="https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/embed.html"
+                id="ifr_693b7511c33297495ef78de2"
+                style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+                referrerPolicy="origin"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="text-center mb-4">

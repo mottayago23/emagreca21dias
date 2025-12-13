@@ -3,24 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Assista o vídeo e libere o acesso completo</title>
+  <title>DeepGram - VSL Landing Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    * {
+    body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: #000;
-      color: #fff;
+      background: #000000;
       overflow-x: hidden;
-      position: relative;
-      min-height: 100vh;
     }
-
-    #matrix-bg {
+    
+    #matrix-canvas {
       position: fixed;
       top: 0;
       left: 0;
@@ -29,456 +22,260 @@
       z-index: 1;
       pointer-events: none;
     }
-
-    .container {
+    
+    .content {
       position: relative;
       z-index: 10;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 40px 20px;
     }
-
-    .logo {
-      display: block;
-      margin: 0 auto 30px;
-      height: 60px;
-      width: auto;
+    
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-
-    h1 {
-      text-align: center;
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 30px;
-      line-height: 1.3;
+    
+    .animate-fade-in {
+      animation: fade-in 0.5s ease-out;
     }
-
-    .video-container {
-      margin: 30px 0;
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
-
-    .viewer-count {
-      text-align: center;
-      font-size: 18px;
-      margin: 20px 0;
+    
+    .pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
-
-    .viewer-count .number {
-      color: #ffd700;
-      font-weight: 700;
+    
+    .chat-scroll::-webkit-scrollbar {
+      width: 8px;
     }
-
-    .chat-box {
-      background: rgba(0, 0, 0, 0.7);
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 20px;
-      margin: 30px 0;
-    }
-
-    .chat-title {
-      color: #00ff00;
-      font-weight: 700;
-      margin-bottom: 15px;
-      font-size: 14px;
-    }
-
-    .chat-messages {
-      max-height: 300px;
-      overflow-y: auto;
-      margin-bottom: 15px;
-    }
-
-    .chat-message {
-      margin-bottom: 12px;
-      opacity: 0;
-      animation: fadeIn 0.5s forwards;
-    }
-
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-
-    .chat-message .author {
-      color: #00ff00;
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    .chat-message .time {
-      color: #666;
-      font-size: 11px;
-      margin-left: 5px;
-    }
-
-    .chat-message .text {
-      color: #fff;
-      font-size: 14px;
-      margin-top: 3px;
-    }
-
-    .chat-input-wrapper {
-      display: flex;
-      gap: 10px;
-    }
-
-    .chat-input {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid #444;
+    
+    .chat-scroll::-webkit-scrollbar-track {
+      background: #1f2937;
       border-radius: 4px;
-      padding: 10px;
-      color: #fff;
-      font-size: 14px;
     }
-
-    .chat-input:focus {
-      outline: none;
-      border-color: #666;
-    }
-
-    .chat-button {
-      background: #fff;
-      color: #000;
-      border: none;
+    
+    .chat-scroll::-webkit-scrollbar-thumb {
+      background: #4b5563;
       border-radius: 4px;
-      padding: 10px 20px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 14px;
     }
-
-    .chat-button:hover {
-      background: #e0e0e0;
-    }
-
-    /* Added offer card styles */
-    .offer-card {
-      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-      border: 2px solid #ffd700;
-      border-radius: 12px;
-      padding: 30px;
-      margin: 40px 0;
-      box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2);
-    }
-
-    .offer-header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-    .offer-title {
-      color: #ffd700;
-      font-size: 24px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
-    }
-
-    .offer-subtitle {
-      color: #fff;
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 5px;
-    }
-
-    .offer-badge {
-      color: #00ff00;
-      font-size: 14px;
-      font-weight: 700;
-      margin-top: 8px;
-    }
-
-    .offer-pricing {
-      text-align: center;
-      margin: 25px 0;
-    }
-
-    .old-price {
-      color: #999;
-      font-size: 18px;
-      text-decoration: line-through;
-      margin-bottom: 5px;
-    }
-
-    .new-price {
-      color: #ffd700;
-      font-size: 36px;
-      font-weight: 900;
-      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-    }
-
-    .offer-features {
-      margin: 25px 0;
-    }
-
-    .feature-item {
-      display: flex;
-      align-items: flex-start;
-      margin-bottom: 12px;
-      color: #fff;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .feature-item::before {
-      content: '✓';
-      color: #00ff00;
-      font-weight: 900;
-      font-size: 18px;
-      margin-right: 10px;
-      flex-shrink: 0;
-    }
-
-    .offer-button {
-      display: block;
-      width: 100%;
-      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      padding: 18px;
-      font-size: 18px;
-      font-weight: 800;
-      text-transform: uppercase;
-      cursor: pointer;
-      margin-top: 25px;
-      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .offer-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 25px rgba(255, 215, 0, 0.6);
-    }
-
-    .offer-button:active {
-      transform: translateY(0);
+    
+    .chat-scroll::-webkit-scrollbar-thumb:hover {
+      background: #6b7280;
     }
   </style>
-
-  <!-- Utmify Pixels -->
-  <script src="https://cdn.utmify.com.br/scripts/utms/latest.js" data-utmify-prevent-xcod-sck data-utmify-prevent-subids async defer></script>
-  <script>
-    window.pixelId = "693647b69da3d8dfc66eb3aa";
-    var a = document.createElement("script");
-    a.setAttribute("async", "");
-    a.setAttribute("defer", "");
-    a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-    document.head.appendChild(a);
-  </script>
 </head>
-<body>
-  <canvas id="matrix-bg"></canvas>
+<body class="text-white min-h-screen">
+  <!-- Matrix Rain Canvas -->
+  <canvas id="matrix-canvas"></canvas>
+  
+  <!-- Content -->
+  <div class="content min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-2xl">
+      <!-- Logo -->
+      <div class="text-center mb-6">
+        <img src="/images/image.png" alt="DeepGram Logo" class="mx-auto mb-4 w-32">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">Assista o vídeo e libere o acesso completo.</h1>
+      </div>
 
-  <div class="container">
-    <img src="/images/image.png" alt="DeepGram Logo" class="logo">
-    
-    <h1>Assista o vídeo e libere o acesso completo</h1>
-
-    <div class="video-container">
-      <div id="ifr_693b7511c33297495ef78de2_wrapper" style="margin: 0 auto; width: 100%; max-width: 400px;">
-        <div style="position: relative; padding: 100% 0 0 0;" id="ifr_693b7511c33297495ef78de2_aspect">
-          <iframe frameborder="0" allowfullscreen id="ifr_693b7511c33297495ef78de2" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" referrerpolicy="origin"></iframe>
+      <!-- VSL -->
+      <div class="mb-4">
+        <div id="ifr_693b7511c33297495ef78de2_wrapper" style="margin: 0 auto; width: 100%; max-width: 400px;">
+          <div style="position: relative; padding: 100% 0 0 0;" id="ifr_693b7511c33297495ef78de2_aspect">
+            <iframe
+              frameborder="0"
+              allowfullscreen
+              src="https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/embed.html"
+              id="ifr_693b7511c33297495ef78de2"
+              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+              referrerpolicy="origin"
+            ></iframe>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="viewer-count">
-      <span class="number" id="viewer-number">2831</span> <span>pessoas assistindo agora</span>
-    </div>
-
-    <!-- Added offer card after viewer count -->
-    <div class="offer-card">
-      <div class="offer-header">
-        <h2 class="offer-title">Hospedagem DeepGram</h2>
-        <p class="offer-subtitle">Acesso ao perfil + Ferramenta completa do DeepGram</p>
-        <p class="offer-badge">Acesso completo + Ferramenta vitalícia</p>
+      <!-- Contador -->
+      <div class="text-center mb-4">
+        <p class="text-lg">
+          <span style="color: #ffd700;" class="font-bold">2.840</span>
+          <span class="text-white"> pessoas assistindo agora</span>
+        </p>
       </div>
 
-      <div class="offer-pricing">
-        <div class="old-price">De: R$ 279,90</div>
-        <div class="new-price">POR R$ 39,90</div>
+      <!-- Card de Oferta (aparece após 1min45s) -->
+      <div id="offerCard" style="display: none;" class="mb-4">
+        <div class="bg-gradient-to-br from-gray-900 to-black border-2 border-white rounded-lg p-6 animate-fade-in">
+          <h2 class="text-2xl font-bold text-center mb-2">🎉 PARABÉNS! 🎉</h2>
+          <p class="text-center text-xl font-semibold mb-4">Você foi sorteado para acesso vitalício!</p>
+
+          <div class="text-center mb-6">
+            <p class="text-gray-400 line-through text-lg mb-1">De R$ 279,90</p>
+            <p class="text-red-500 text-xl font-bold mb-1">-79%</p>
+            <p class="text-4xl font-bold mb-1" style="color: #ffd700;">R$ 59,90</p>
+            <p class="text-green-400 text-sm font-semibold">Pagamento único</p>
+          </div>
+
+          <div class="space-y-2 mb-6 text-sm">
+            <div class="flex items-start gap-2">
+              <span class="text-green-500 text-lg">✓</span>
+              <p class="text-white font-medium">Acesso completo ao perfil</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-green-500 text-lg">✓</span>
+              <p class="text-white font-medium">Stories ocultos ou postados apenas para melhores amigos</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-green-500 text-lg">✓</span>
+              <p class="text-white font-medium">Acesso a mídia (fotos e vídeos) recebidos e enviados</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-green-500 text-lg">✓</span>
+              <p class="text-white font-medium">Directs em tempo real e directs antigos (até 18 meses atrás)</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-green-500 text-lg">✓</span>
+              <p class="text-white font-medium">Localização em tempo real e locais visitados frequentes</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-yellow-400 text-lg">★</span>
+              <p class="text-white font-medium">Notificações em tempo real de tudo que acontecer na conta</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-yellow-400 text-lg">★</span>
+              <p class="text-white font-medium">Relatório detalhado do perfil com análise de IA</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-yellow-400 text-lg">★</span>
+              <p class="text-white font-medium">Stalkear quantos perfis quiser (ILIMITADO)</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-green-500 text-lg">✓</span>
+              <p class="text-white font-medium">Acesso vitalício</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-green-500 text-lg">✓</span>
+              <p class="text-white font-medium">Sem mensalidades</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-green-500 text-lg">✓</span>
+              <p class="text-white font-medium">Localizações antigas e relatório de locais mais visitados</p>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-green-500 text-lg">✓</span>
+              <p class="text-white font-medium">Direct antigos (até 18 meses atrás)</p>
+            </div>
+          </div>
+
+          <a
+            href="https://pay.kirvano.com/d1068743-15df-4ede-bbcc-aa9db15cbb01"
+            class="block w-full bg-gradient-to-r from-green-500 to-green-600 text-white text-xl font-bold py-4 rounded-lg hover:from-green-600 hover:to-green-700 transition-all text-center transform hover:scale-105"
+            style="text-decoration: none;"
+          >
+            PAGAR TAXA DE ACESSO
+          </a>
+        </div>
       </div>
 
-      <div class="offer-features">
-        <div class="feature-item">Acesso completo ao perfil</div>
-        <div class="feature-item">Stories ocultos ou postados apenas para melhores amigos</div>
-        <div class="feature-item">Acesso a mídia (fotos e vídeos) recebidos e enviados por direct</div>
-        <div class="feature-item">Directs em tempo real e directs antigos (até 18 meses atrás)</div>
-        <div class="feature-item">Localização em tempo real e locais visitados frequentes</div>
-        <div class="feature-item">Notificações em tempo real de tudo que acontecer na conta que conectar</div>
-        <div class="feature-item">Relatório detalhado do perfil com análise de IA</div>
-        <div class="feature-item">Stalkear quantos perfis quiser (ILIMITADO)</div>
-        <div class="feature-item">Sem mensalidades</div>
-        <div class="feature-item">Localizações antigas e relatório de locais mais visitados</div>
-        <div class="feature-item">Direct antigos (até 18 meses atrás)</div>
-      </div>
+      <!-- Chat -->
+      <div class="bg-black border-2 border-white rounded-lg p-4" style="background: rgba(0, 0, 0, 0.8);">
+        <div class="flex items-center gap-2 mb-3">
+          <div class="w-2 h-2 bg-green-500 rounded-full pulse"></div>
+          <h3 class="text-green-400 font-semibold text-sm uppercase tracking-wider">Chat da Transmissão</h3>
+        </div>
 
-      <button class="offer-button">Pagar Taxa de Acesso</button>
-    </div>
+        <div class="space-y-3 mb-4 max-h-64 overflow-y-auto chat-scroll">
+          <div class="animate-fade-in">
+            <p class="text-gray-400 text-sm font-semibold">Julia S. <span class="text-gray-500 text-xs ml-1">• Agora mesmo</span></p>
+            <p class="text-white text-sm">Consegui ver a localização em tempo real!</p>
+          </div>
+          <div class="animate-fade-in">
+            <p class="text-gray-400 text-sm font-semibold">Rodrigo T. <span class="text-gray-500 text-xs ml-1">• Agora mesmo</span></p>
+            <p class="text-white text-sm">Inacreditável como o DeepGram funciona bem</p>
+          </div>
+          <div class="animate-fade-in">
+            <p class="text-gray-400 text-sm font-semibold">Pedro H. <span class="text-gray-500 text-xs ml-1">• Há 1 min</span></p>
+            <p class="text-white text-sm">Liberei o acesso em menos de 1 minuto com DeepGram</p>
+          </div>
+          <div class="animate-fade-in">
+            <p class="text-gray-400 text-sm font-semibold">Ana Costa <span class="text-gray-500 text-xs ml-1">• Há 2 min</span></p>
+            <p class="text-white text-sm">Funciona mesmo! Estou em choque 😱</p>
+          </div>
+          <div class="animate-fade-in">
+            <p class="text-gray-400 text-sm font-semibold">Carlos M. <span class="text-gray-500 text-xs ml-1">• Há 3 min</span></p>
+            <p class="text-white text-sm">Melhor ferramenta que já usei</p>
+          </div>
+          <div class="animate-fade-in">
+            <p class="text-gray-400 text-sm font-semibold">Fernanda R. <span class="text-gray-500 text-xs ml-1">• Agora mesmo</span></p>
+            <p class="text-white text-sm">Consegui monitorar tudo que eu queria</p>
+          </div>
+        </div>
 
-    <div class="chat-box">
-      <div class="chat-title">💬 CHAT DA TRANSMISSÃO</div>
-      <div class="chat-messages" id="chat-messages"></div>
-      <div class="chat-input-wrapper">
-        <input type="text" class="chat-input" id="chat-input" placeholder="Escreva um comentário...">
-        <button class="chat-button" id="chat-submit">Enviar</button>
+        <form class="flex gap-2" onsubmit="return false;">
+          <input
+            type="text"
+            placeholder="Escreva um comentário..."
+            class="flex-1 bg-gray-900 border border-gray-700 rounded px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-green-500"
+          />
+          <button
+            type="submit"
+            class="bg-white text-black px-6 py-2 rounded font-semibold hover:bg-gray-200 transition-colors"
+          >
+            Enviar
+          </button>
+        </form>
       </div>
     </div>
   </div>
 
   <script>
-    // Matrix Effect
-    const canvas = document.getElementById('matrix-bg');
+    // Matrix Rain Animation
+    const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*';
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-    const colors = ['#ff0040', '#ff006e', '#d90368', '#ff4d6d', '#ff6b9d'];
+    const columns = Math.floor(canvas.width / 20);
+    const drops = Array(columns).fill(1);
+    const colors = ['#ff0066', '#ff3366', '#ff0080', '#cc0055', '#ff1a75'];
 
-    function drawMatrix() {
+    function draw() {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+      ctx.font = '14px monospace';
+
       for (let i = 0; i < drops.length; i++) {
-        const char = chars[Math.floor(Math.random() * chars.length)];
+        const text = String.fromCharCode(Math.random() * 128);
         const color = colors[Math.floor(Math.random() * colors.length)];
         ctx.fillStyle = color;
         ctx.globalAlpha = 0.35;
-        ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+        ctx.fillText(text, i * 20, drops[i] * 20);
 
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
         drops[i]++;
       }
     }
 
-    setInterval(drawMatrix, 50);
+    setInterval(draw, 50);
 
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
 
-    // Load VSL
+    // Mostrar oferta após 1min45s
     setTimeout(() => {
-      const iframe = document.getElementById('ifr_693b7511c33297495ef78de2');
-      iframe.src = 'https://scripts.converteai.net/fa1f35ed-91d5-410b-8a15-3fbfd9b0f1ad/players/693b7511c33297495ef78de2/v4/embed.html' + 
-                    (location.search || '?') + 
-                    '&vl=' + encodeURIComponent(location.href);
-    }, 100);
-
-    // Viewer Count Animation
-    function updateViewerCount() {
-      const viewerEl = document.getElementById('viewer-number');
-      const current = parseInt(viewerEl.textContent);
-      const change = Math.floor(Math.random() * 7) - 3;
-      const newCount = Math.max(2800, Math.min(2900, current + change));
-      viewerEl.textContent = newCount.toLocaleString('pt-BR');
-    }
-    setInterval(updateViewerCount, 15000);
-
-    // Chat Messages
-    const chatMessages = [
-      { author: 'Maria S.', text: 'Não acredito que isso existe...' },
-      { author: 'João P.', text: 'Já liberei o acesso do meu alvo kkkkk' },
-      { author: 'Ana Costa', text: 'Funciona mesmo! Estou em choque 😱' },
-      { author: 'Carlos M.', text: 'Melhor ferramenta que já usei!' },
-      { author: 'Beatriz L.', text: 'Mano isso é real??? 😨' },
-      { author: 'Rafael S.', text: 'Consegui ver tudo, valeu demais!' },
-      { author: 'Juliana K.', text: 'Incrível! Tô passada' },
-      { author: 'Pedro H.', text: 'Sério que isso funciona?' },
-      { author: 'Camila R.', text: 'Acabei de conseguir acesso aqui' },
-      { author: 'Lucas F.', text: 'Muito bom mesmo, recomendo' },
-      { author: 'Fernanda A.', text: 'Não esperava que fosse tão fácil' },
-      { author: 'Ricardo T.', text: 'Melhor investimento que fiz' },
-      { author: 'Aline M.', text: 'Consegui em menos de 1 minuto' },
-      { author: 'Thiago L.', text: 'Valeu a pena assistir!' },
-      { author: 'Gabriela S.', text: 'Inacreditável como funciona' },
-      { author: 'Marcos V.', text: 'Já compartilhei com os amigos' },
-      { author: 'Paula N.', text: 'Muito obrigada por compartilhar isso' },
-      { author: 'Diego C.', text: 'Melhor do que eu imaginava' },
-      { author: 'Renata B.', text: 'Funcionou perfeitamente aqui!' },
-      { author: 'André L.', text: 'Não perca tempo, vale muito a pena' }
-    ];
-
-    let messageIndex = 0;
-    const chatContainer = document.getElementById('chat-messages');
-
-    function addChatMessage(author, text) {
-      const messageEl = document.createElement('div');
-      messageEl.className = 'chat-message';
-      
-      const now = new Date();
-      const timeStr = `Há ${Math.floor(Math.random() * 5) + 1} min`;
-      
-      messageEl.innerHTML = `
-        <div>
-          <span class="author">${author}</span>
-          <span class="time">${timeStr}</span>
-        </div>
-        <div class="text">${text}</div>
-      `;
-      
-      chatContainer.insertBefore(messageEl, chatContainer.firstChild);
-      
-      const messages = chatContainer.querySelectorAll('.chat-message');
-      if (messages.length > 6) {
-        messages[messages.length - 1].remove();
-      }
-    }
-
-    function addNextMessage() {
-      if (messageIndex < chatMessages.length) {
-        const msg = chatMessages[messageIndex];
-        addChatMessage(msg.author, msg.text);
-        messageIndex++;
-      }
-    }
-
-    // Add initial messages
-    for (let i = 0; i < 6; i++) {
-      addNextMessage();
-    }
-
-    // Add new messages every 8 seconds for 105 seconds (VSL duration)
-    const chatInterval = setInterval(() => {
-      addNextMessage();
-      if (messageIndex >= chatMessages.length) {
-        clearInterval(chatInterval);
-      }
-    }, 8000);
-
-    // User comment
-    document.getElementById('chat-submit').addEventListener('click', () => {
-      const input = document.getElementById('chat-input');
-      const text = input.value.trim();
-      if (text) {
-        addChatMessage('usuário', text);
-        input.value = '';
-      }
-    });
-
-    document.getElementById('chat-input').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        document.getElementById('chat-submit').click();
-      }
-    });
-  </script>
-
-  <!-- VSL SDK -->
-  <script type="text/javascript">
-    var s = document.createElement("script");
-    s.src = "https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js";
-    s.async = true;
-    document.head.appendChild(s);
+      document.getElementById('offerCard').style.display = 'block';
+    }, 105000);
   </script>
 </body>
 </html>
