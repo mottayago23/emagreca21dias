@@ -90,7 +90,7 @@ export default function VSLPage() {
     const timer = setTimeout(() => {
       setShowOffer(true)
       createConfetti()
-    }, 105000)
+    }, 125000) // Alterando delay de 105000ms (1min45s) para 125000ms (2min5s)
 
     return () => clearTimeout(timer)
   }, [])
